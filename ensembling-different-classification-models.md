@@ -1,10 +1,12 @@
+Trying Out and Ensembling Different Classification Models
+================
 
 # Trying Out and Ensembling Different Classification Models
 
 **This is the second complete notebook that I am creating. [Here’s a
 link to the
-first](https://github.com/elijahrona/Elijah-Rona-ML-Journey/blob/master/do-you-have-malaria-or-covid-19.ipynb)
-where I worked with Covid-19, Malaria, and Negative patients.**
+first.](https://github.com/elijahrona/Elijah-Rona-ML-Journey/blob/master/do-you-have-malaria-or-covid-19.ipynb)
+where I worked with Covid-19, Malaria, and Negative patients**
 
 **The purpose of this notebook is to improve my Recipes(), Workflow(),
 and Ensembling (Stacks()) skills.**
@@ -55,7 +57,7 @@ library(tidymodels)
 # Dataset
 
 ``` r
-mine <- read.csv("C:/Users/Octopus/Desktop/in-vehicle-coupon-recommendation.csv", stringsAsFactors=TRUE)
+mine <- read.csv("C:/Users/Octopus/Desktop/Data/Raw/For R/in-vehicle-coupon-recommendation.csv", stringsAsFactors=TRUE)
 head(mine)
 ```
 
@@ -222,8 +224,8 @@ head()
     ##          <int>             <int>             <int>          <int>         <int>
     ## 1            1                 0                 0              0             1
     ## 2            1                 1                 0              0             1
-    ## 3            1                 1                 0              0             1
-    ## 4            1                 1                 1              0             1
+    ## 3            1                 1                 1              0             1
+    ## 4            1                 0                 0              0             1
     ## 5            0                 0                 0              0             1
     ## 6            0                 1                 0              0             1
     ## # ... with 88 more variables: Y <fct>, destination_No.Urgent.Place <dbl>,
@@ -232,56 +234,17 @@ head()
     ## #   temperature_X55 <dbl>, temperature_X80 <dbl>, time_X10PM <dbl>,
     ## #   time_X2PM <dbl>, time_X6PM <dbl>, time_X7AM <dbl>,
     ## #   coupon_Carry.out...Take.away <dbl>, coupon_Coffee.House <dbl>,
-    ## #   coupon_Restaurant..20. <dbl>, coupon_Restaurant.20.50. <dbl>,
-    ## #   expiration_X2h <dbl>, gender_Male <dbl>, age_X26 <dbl>, age_X31 <dbl>,
-    ## #   age_X36 <dbl>, age_X41 <dbl>, age_X46 <dbl>, age_X50plus <dbl>,
-    ## #   age_below21 <dbl>, maritalStatus_Married.partner <dbl>,
-    ## #   maritalStatus_Single <dbl>, maritalStatus_Unmarried.partner <dbl>,
-    ## #   maritalStatus_Widowed <dbl>, education_Bachelors.degree <dbl>,
-    ## #   education_Graduate.degree..Masters.or.Doctorate. <dbl>,
-    ## #   education_High.School.Graduate <dbl>,
-    ## #   education_Some.college...no.degree <dbl>, education_Some.High.School <dbl>,
-    ## #   occupation_Arts.Design.Entertainment.Sports...Media <dbl>,
-    ## #   occupation_Building...Grounds.Cleaning...Maintenance <dbl>,
-    ## #   occupation_Business...Financial <dbl>,
-    ## #   occupation_Community...Social.Services <dbl>,
-    ## #   occupation_Computer...Mathematical <dbl>,
-    ## #   occupation_Construction...Extraction <dbl>,
-    ## #   occupation_Education.Training.Library <dbl>,
-    ## #   occupation_Farming.Fishing...Forestry <dbl>,
-    ## #   occupation_Food.Preparation...Serving.Related <dbl>,
-    ## #   occupation_Healthcare.Practitioners...Technical <dbl>,
-    ## #   occupation_Healthcare.Support <dbl>,
-    ## #   occupation_Installation.Maintenance...Repair <dbl>, occupation_Legal <dbl>,
-    ## #   occupation_Life.Physical.Social.Science <dbl>, occupation_Management <dbl>,
-    ## #   occupation_Office...Administrative.Support <dbl>,
-    ## #   occupation_Personal.Care...Service <dbl>,
-    ## #   occupation_Production.Occupations <dbl>,
-    ## #   occupation_Protective.Service <dbl>, occupation_Retired <dbl>,
-    ## #   occupation_Sales...Related <dbl>, occupation_Student <dbl>,
-    ## #   occupation_Transportation...Material.Moving <dbl>,
-    ## #   occupation_Unemployed <dbl>, income_X.12500. <dbl>, income_X.25000. <dbl>,
-    ## #   income_X.37500. <dbl>, income_X.50000. <dbl>, income_X.62500. <dbl>,
-    ## #   income_X.75000. <dbl>, income_X.87500. <dbl>,
-    ## #   income_Less.than..12500 <dbl>, Bar_X1.3 <dbl>, Bar_X4.8 <dbl>,
-    ## #   Bar_gt8 <dbl>, Bar_less1 <dbl>, Bar_never <dbl>, CoffeeHouse_X1.3 <dbl>,
-    ## #   CoffeeHouse_X4.8 <dbl>, CoffeeHouse_gt8 <dbl>, CoffeeHouse_less1 <dbl>,
-    ## #   CoffeeHouse_never <dbl>, RestaurantLessThan20_X1.3 <dbl>,
-    ## #   RestaurantLessThan20_X4.8 <dbl>, RestaurantLessThan20_gt8 <dbl>,
-    ## #   RestaurantLessThan20_less1 <dbl>, RestaurantLessThan20_never <dbl>,
-    ## #   Restaurant20To50_X1.3 <dbl>, Restaurant20To50_X4.8 <dbl>,
-    ## #   Restaurant20To50_gt8 <dbl>, Restaurant20To50_less1 <dbl>,
-    ## #   Restaurant20To50_never <dbl>
+    ## #   coupon_Restaurant..20. <dbl>, coupon_Restaurant.20.50. <dbl>, ...
 
 # Specifying Our Models
 
-We shall be working with four models; Logistic Regression, MARS, Random
-Forest (named treebag), and XGBOOST
+We shall be working with four models; SVM, MARS, Random Forest (named
+treebag), and XGBOOST
 
 ``` r
-log_spec <- logistic_reg(penalty = 10) %>%
-  set_engine(engine = "glm") %>%
-  set_mode("classification")
+svm_spec <- svm_poly() %>% 
+  set_mode("classification") %>% 
+  set_engine("kernlab")
 
 mars_spec <- mars() %>%
   set_mode("classification") %>% 
@@ -301,9 +264,9 @@ xgboost_spec <- boost_tree() %>%
 A workflow is created for each model, but with the same recipe
 
 ``` r
-wf_log <- workflow() %>% 
+wf_svm <- workflow() %>% 
 add_recipe(train_rec) %>% 
-add_model(log_spec)
+add_model(svm_spec)
 
 wf_mars <- workflow() %>% 
 add_recipe(train_rec) %>% 
@@ -318,13 +281,13 @@ add_recipe(train_rec) %>%
 add_model(xgboost_spec)
 ```
 
-# Building Our Logistic Model
+# Building Our SVM Model
 
 First of all, let us start with fitting the train data
 
 ``` r
-train_fit_log <- 
-  wf_log %>% 
+train_fit_svm <- 
+  wf_svm %>% 
   fit(data = ames_train)
 ```
 
@@ -336,11 +299,13 @@ train_fit_log <-
     ## * income_X.62500....74999 -> income_X.62500.
     ## * ...
 
+    ##  Setting default kernel parameters
+
 Now we move to predicting the test data. Note that the data was also
 processed with the recipe
 
 ``` r
-pred_log <- augment(train_fit_log, ames_test)
+pred_svm <- augment(train_fit_svm, ames_test)
 ```
 
     ## New names:
@@ -351,38 +316,30 @@ pred_log <- augment(train_fit_log, ames_test)
     ## * income_X.62500....74999 -> income_X.62500.
     ## * ...
 
-    ## Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :
-    ## prediction from a rank-deficient fit may be misleading
-
-    ## Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == :
-    ## prediction from a rank-deficient fit may be misleading
-
 What is the accuracy of our model prediction?
 
 ``` r
-LOG_Accuracy <- pred_log %>% 
+SVM_Accuracy <- pred_svm %>% 
   accuracy(truth = Y, .pred_class)
 
-LOG_Accuracy[[1,3]]
+SVM_Accuracy[[1,3]]
 ```
 
-    ## [1] 0.6860025
+    ## [1] 0.6888398
 
-With an accuracy of 56.8%, there s room for improvement. Let’s plot a
+With an accuracy of 68.3%, there s room for improvement. Let’s plot a
 confusion matrix for the model for better visualization.
 
 ``` r
-p1 <- conf_mat(pred_log, truth = Y, estimate = .pred_class) %>% 
+p1 <- conf_mat(pred_svm, truth = Y, estimate = .pred_class) %>% 
   autoplot(type = "heatmap") +
-  labs(title = "Logistic",
-       subtitle = LOG_Accuracy[[1,3]])
+  labs(title = "SVM",
+       subtitle = SVM_Accuracy[[1,3]])
 
 p1
 ```
 
-![](README_figs/README-unnamed-chunk-15-1.png)<!-- -->
-
-The Logistic model is not so bad. Let’s see if there are better models.
+![](README_figs_esembling/README-unnamed-chunk-15-1.png)<!-- -->
 
 # Building Our MARS Model
 
@@ -419,7 +376,7 @@ MARS_Accuracy <- pred_mars %>%
 MARS_Accuracy[[1,3]]
 ```
 
-    ## [1] 0.6771753
+    ## [1] 0.685372
 
 ``` r
 p2 <- conf_mat(pred_mars, truth = Y, estimate = .pred_class) %>% 
@@ -430,7 +387,7 @@ p2 <- conf_mat(pred_mars, truth = Y, estimate = .pred_class) %>%
 p2
 ```
 
-![](README_figs/README-unnamed-chunk-16-1.png)<!-- -->
+![](README_figs_esembling/README-unnamed-chunk-16-1.png)<!-- -->
 
 # Building Our Random Forest Model
 
@@ -467,7 +424,7 @@ TREEBAG_Accuracy <- pred_treebag %>%
 TREEBAG_Accuracy[[1,3]]
 ```
 
-    ## [1] 0.7345523
+    ## [1] 0.7528373
 
 ``` r
 p3 <- conf_mat(pred_treebag, truth = Y, estimate = .pred_class) %>% 
@@ -478,7 +435,7 @@ p3 <- conf_mat(pred_treebag, truth = Y, estimate = .pred_class) %>%
 p3
 ```
 
-![](README_figs/README-unnamed-chunk-17-1.png)<!-- -->
+![](README_figs_esembling/README-unnamed-chunk-17-1.png)<!-- -->
 
 # Building Our XGBOOST Model
 
@@ -496,7 +453,7 @@ train_fit_xgboost <-
     ## * income_X.62500....74999 -> income_X.62500.
     ## * ...
 
-    ## [04:42:42] WARNING: amalgamation/../src/learner.cc:1095: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective 'binary:logistic' was changed from 'error' to 'logloss'. Explicitly set eval_metric if you'd like to restore the old behavior.
+    ## [22:09:22] WARNING: amalgamation/../src/learner.cc:1095: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective 'binary:logistic' was changed from 'error' to 'logloss'. Explicitly set eval_metric if you'd like to restore the old behavior.
 
 ``` r
 pred_xgboost <- augment(train_fit_xgboost, ames_test)
@@ -517,7 +474,7 @@ XGBOOST_Accuracy <- pred_xgboost %>%
 XGBOOST_Accuracy[[1,3]]
 ```
 
-    ## [1] 0.7250946
+    ## [1] 0.7361286
 
 ``` r
 p4 <- conf_mat(pred_xgboost, truth = Y, estimate = .pred_class) %>% 
@@ -528,7 +485,7 @@ p4 <- conf_mat(pred_xgboost, truth = Y, estimate = .pred_class) %>%
 p4
 ```
 
-![](README_figs/README-unnamed-chunk-18-1.png)<!-- -->
+![](README_figs_esembling/README-unnamed-chunk-18-1.png)<!-- -->
 
 # Confusion Matrix for Every Model
 
@@ -541,7 +498,7 @@ ggpubr::ggarrange(p1,p2,p3,p4,
                    nrow = 2)
 ```
 
-![](README_figs/README-unnamed-chunk-19-1.png)<!-- -->
+![](README_figs_esembling/README-unnamed-chunk-19-1.png)<!-- -->
 
 # Ensembling Our Models
 
@@ -805,12 +762,12 @@ xgboost_res <-
     ## * income_X.62500....74999 -> income_X.62500.
     ## * ...
 
-# Preparing the Logistic Model for Ensembling
+# Preparing the SVM Model for Ensembling
 
 ``` r
-log_res <- 
+svm_res <- 
   fit_resamples(
-    wf_log, #workflow
+    wf_svm, #workflow
     resamples = folds, #cvfold
     metrics = metric,
     control = ctrl_res
@@ -831,9 +788,6 @@ log_res <-
     ## * income_X.50000....62499 -> income_X.50000.
     ## * income_X.62500....74999 -> income_X.62500.
     ## * ...
-
-    ## ! Fold1: preprocessor 1/1, model 1/1 (predictions): prediction from a rank-defici...
-
     ## New names:
     ## * income_X.12500....24999 -> income_X.12500.
     ## * income_X.25000....37499 -> income_X.25000.
@@ -848,9 +802,6 @@ log_res <-
     ## * income_X.50000....62499 -> income_X.50000.
     ## * income_X.62500....74999 -> income_X.62500.
     ## * ...
-
-    ## ! Fold2: preprocessor 1/1, model 1/1 (predictions): prediction from a rank-defici...
-
     ## New names:
     ## * income_X.12500....24999 -> income_X.12500.
     ## * income_X.25000....37499 -> income_X.25000.
@@ -865,9 +816,6 @@ log_res <-
     ## * income_X.50000....62499 -> income_X.50000.
     ## * income_X.62500....74999 -> income_X.62500.
     ## * ...
-
-    ## ! Fold3: preprocessor 1/1, model 1/1 (predictions): prediction from a rank-defici...
-
     ## New names:
     ## * income_X.12500....24999 -> income_X.12500.
     ## * income_X.25000....37499 -> income_X.25000.
@@ -882,9 +830,6 @@ log_res <-
     ## * income_X.50000....62499 -> income_X.50000.
     ## * income_X.62500....74999 -> income_X.62500.
     ## * ...
-
-    ## ! Fold4: preprocessor 1/1, model 1/1 (predictions): prediction from a rank-defici...
-
     ## New names:
     ## * income_X.12500....24999 -> income_X.12500.
     ## * income_X.25000....37499 -> income_X.25000.
@@ -899,15 +844,13 @@ log_res <-
     ## * income_X.50000....62499 -> income_X.50000.
     ## * income_X.62500....74999 -> income_X.62500.
     ## * ...
-
-    ## ! Fold5: preprocessor 1/1, model 1/1 (predictions): prediction from a rank-defici...
 
 # Adding Every Model to Our Stack
 
 ``` r
 library(stacks)
 model_data_st <-  stacks() %>%
-  add_candidates(log_res) %>%
+  add_candidates(svm_res) %>%
   add_candidates(treebag_res) %>%
   add_candidates(xgboost_res) %>%
   add_candidates(mars_res)
@@ -916,7 +859,7 @@ head(model_data_st)
 ```
 
     ## # A data stack with 4 model definitions and 4 candidate members:
-    ## #   log_res: 1 model configuration
+    ## #   svm_res: 1 model configuration
     ## #   treebag_res: 1 model configuration
     ## #   xgboost_res: 1 model configuration
     ## #   mars_res: 1 model configuration
@@ -939,19 +882,19 @@ theme_set(theme_bw())
 autoplot(fitted_model_st)
 ```
 
-![](README_figs/README-unnamed-chunk-27-1.png)<!-- -->
+![](README_figs_esembling/README-unnamed-chunk-27-1.png)<!-- -->
 
 ``` r
 autoplot(fitted_model_st, type = "members")
 ```
 
-![](README_figs/README-unnamed-chunk-28-1.png)<!-- -->
+![](README_figs_esembling/README-unnamed-chunk-28-1.png)<!-- -->
 
 ``` r
 autoplot(fitted_model_st, type = "weights")
 ```
 
-![](README_figs/README-unnamed-chunk-29-1.png)<!-- -->
+![](README_figs_esembling/README-unnamed-chunk-29-1.png)<!-- -->
 
 ``` r
 fitted_model_st
@@ -961,7 +904,7 @@ fitted_model_st
 
     ## 
     ## Out of 4 possible candidate members, the ensemble retained 2.
-    ## Penalty: 1e-05.
+    ## Penalty: 1e-06.
     ## Mixture: 1.
 
     ## 
@@ -970,14 +913,14 @@ fitted_model_st
     ## # A tibble: 2 x 3
     ##   member                  type        weight
     ##   <chr>                   <chr>        <dbl>
-    ## 1 .pred_1_treebag_res_1_1 rand_forest   6.05
-    ## 2 .pred_1_xgboost_res_1_1 boost_tree    1.15
+    ## 1 .pred_1_treebag_res_1_1 rand_forest   6.11
+    ## 2 .pred_1_xgboost_res_1_1 boost_tree    1.06
 
     ## 
     ## Members have not yet been fitted with `fit_members()`.
 
 The final model retained just two of our models; Random Forest and
-XGBOOST. Let us combine these models to predict our test data.
+XGBOOST. Let us combine these models to predict our test data
 
 ``` r
 fitted_model_st <-
@@ -1000,7 +943,7 @@ fitted_model_st <-
     ## * income_X.62500....74999 -> income_X.62500.
     ## * ...
 
-    ## [04:47:28] WARNING: amalgamation/../src/learner.cc:1095: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective 'binary:logistic' was changed from 'error' to 'logloss'. Explicitly set eval_metric if you'd like to restore the old behavior.
+    ## [22:39:19] WARNING: amalgamation/../src/learner.cc:1095: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective 'binary:logistic' was changed from 'error' to 'logloss'. Explicitly set eval_metric if you'd like to restore the old behavior.
 
 ``` r
 test_predict_data <- 
@@ -1023,7 +966,7 @@ test_predict_data <-
     ## * income_X.62500....74999 -> income_X.62500.
     ## * ...
 
-# Prediting the test data
+Prediting the test data
 
 ``` r
 member_preds <- 
@@ -1052,12 +995,12 @@ head(member_preds)
 ```
 
     ##   Y .pred_class .pred_class_treebag_res_1_1 .pred_class_xgboost_res_1_1
-    ## 1 1           1                           1                           1
+    ## 1 0           0                           0                           0
     ## 2 0           0                           0                           0
     ## 3 1           1                           1                           1
-    ## 4 1           0                           0                           0
-    ## 5 0           0                           0                           0
-    ## 6 1           0                           0                           0
+    ## 4 1           1                           1                           1
+    ## 5 1           0                           0                           0
+    ## 6 0           0                           0                           0
 
 Let us compare the accuracy of the combined model with that of the other
 member models
@@ -1071,13 +1014,13 @@ map_dfr(member_preds, accuracy, truth = Y, data = member_preds) %>%
     ##   .metric  .estimator .estimate member                     
     ##   <chr>    <chr>          <dbl> <chr>                      
     ## 1 accuracy binary         1     Y                          
-    ## 2 accuracy binary         0.732 .pred_class                
-    ## 3 accuracy binary         0.739 .pred_class_treebag_res_1_1
-    ## 4 accuracy binary         0.725 .pred_class_xgboost_res_1_1
+    ## 2 accuracy binary         0.754 .pred_class                
+    ## 3 accuracy binary         0.753 .pred_class_treebag_res_1_1
+    ## 4 accuracy binary         0.736 .pred_class_xgboost_res_1_1
 
 After every model learned from each other, the model with the highest
-accuracy is Random Forest (74.55%) while the combined model came second
-(74.14%). XGBOOST came last (72.06%).
+accuracy is the combined model (74.77%) while XGBOOST came last
+(73.23%).
 
 ``` r
 p1 <- conf_mat(member_preds, truth = Y, estimate = .pred_class) %>% 
@@ -1088,7 +1031,7 @@ p2 <- conf_mat(member_preds, truth = Y, estimate = .pred_class_treebag_res_1_1) 
   autoplot(type = "heatmap") +
   labs(title = "Random Forest")
 
-p3 <- conf_mat(member_preds, truth = Y, estimate = .pred_class_treebag_res_1_1) %>% 
+p3 <- conf_mat(member_preds, truth = Y, estimate = .pred_class_xgboost_res_1_1) %>% 
   autoplot(type = "heatmap") +
   labs(title = "XGBOOST")
 
@@ -1097,6 +1040,6 @@ ggpubr::ggarrange(p1,p2,p3,
           nrow = 2)
 ```
 
-![](README_figs/README-unnamed-chunk-35-1.png)<!-- -->
+![](README_figs_esembling/README-unnamed-chunk-35-1.png)<!-- -->
 
 # Thanks for Reading
