@@ -193,7 +193,7 @@ options(repr.plot.width=16, repr.plot.height = 9)
 finally$ThryroidClass$pregnant
 ```
 
-![](README_figs/README-unnamed-chunk-6-1.png)<!-- -->
+![](README_figs_thyroid/README-unnamed-chunk-6-1.png)<!-- -->
 
 It works!! Time to combine all plots
 
@@ -201,7 +201,7 @@ It works!! Time to combine all plots
 cowplot::plot_grid(plotlist = finally[[1]], scale = 1)
 ```
 
-![](README_figs/README-unnamed-chunk-7-1.png)<!-- -->
+![](README_figs_thyroid/README-unnamed-chunk-7-1.png)<!-- -->
 
 Explaining these plots can be quite difficult, so let us use statistical
 EDA through which we can know if each column is effective in predicting
@@ -392,7 +392,7 @@ finally1 <- map(response, ~map(predicator1, chart_fun1, y = .x))
 cowplot::plot_grid(plotlist = finally1[[1]])
 ```
 
-![](README_figs/README-unnamed-chunk-9-1.png)<!-- -->
+![](README_figs_thyroid/README-unnamed-chunk-9-1.png)<!-- -->
 
 We can see from the boxplots that older people are more likely to have
 thyroid. To further understand all columns, let us use ANOVA. Same
@@ -549,7 +549,7 @@ td_rf_pred %>%
   autoplot()
 ```
 
-![](README_figs/README-unnamed-chunk-16-1.png)<!-- -->
+![](README_figs_thyroid/README-unnamed-chunk-16-1.png)<!-- -->
 
 The Roc_AUC is wonderful
 
@@ -593,7 +593,7 @@ other models
 
 ### 4 (A). Building Our Model (XGBOOST)
 
-We will be tuning this model
+\#We will be tuning this model
 
 ``` r
 #Get the tuning parameters of a model
@@ -672,7 +672,7 @@ td_xgboost_fold %>%
   scale_color_viridis_d(option = "plasma", begin = .9, end = 0)
 ```
 
-![](README_figs/README-unnamed-chunk-22-1.png)<!-- -->
+![](README_figs_thyroid/README-unnamed-chunk-22-1.png)<!-- -->
 
 Since we saved the best hyperparameter combination as “best_boost”, we
 will use that variable in out model
@@ -710,7 +710,7 @@ final_xgboost_fit %>% #You can use this to predict on new data
   autoplot()
 ```
 
-![](README_figs/README-unnamed-chunk-25-1.png)<!-- -->
+![](README_figs_thyroid/README-unnamed-chunk-25-1.png)<!-- -->
 
 Let us predict with our test dataset
 
@@ -891,7 +891,7 @@ Let us visualize the fitted models
 autoplot(fitted_model_st)
 ```
 
-![](README_figs/README-unnamed-chunk-33-1.png)<!-- -->
+![](README_figs_thyroid/README-unnamed-chunk-33-1.png)<!-- -->
 
 Our ensembled model will select the best penalty and other parameters
 
@@ -905,7 +905,7 @@ fitted_model_st <-
   fit_members()
 ```
 
-    ## [23:40:34] WARNING: amalgamation/../src/learner.cc:1095: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective 'binary:logistic' was changed from 'error' to 'logloss'. Explicitly set eval_metric if you'd like to restore the old behavior.
+    ## [23:28:38] WARNING: amalgamation/../src/learner.cc:1095: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective 'binary:logistic' was changed from 'error' to 'logloss'. Explicitly set eval_metric if you'd like to restore the old behavior.
 
 Time to predict with the test data
 
@@ -984,23 +984,11 @@ map_dfr(member_preds, accuracy, truth = ThryroidClass, data = member_preds) %>%
     ## 3 accuracy binary         0.985 .pred_class_xgboost_res_1_4
     ## 4 accuracy binary         0.985 .pred_class_rf_res_1_1
 
-``` r
-head(member_preds)
-```
-
-    ##   ThryroidClass .pred_class .pred_class_xgboost_res_1_4 .pred_class_rf_res_1_1
-    ## 1          sick        sick                        sick                   sick
-    ## 2      negative    negative                    negative               negative
-    ## 3          sick        sick                        sick                   sick
-    ## 4      negative    negative                    negative               negative
-    ## 5      negative    negative                    negative               negative
-    ## 6      negative    negative                    negative               negative
-
 They all seem good
 
 ## Confusion Matrix
 
-It helps to visualize our predicted data (in relation to the truth)
+It elps to visualize our predicted data (in relation to the truth)
 
 ``` r
 p1 <- conf_mat(td_rf_pred, truth = ThryroidClass, estimate = .pred_class) %>% 
@@ -1029,11 +1017,10 @@ ggarrange(p1,p2,p3,p4,p5,
           nrow = 2)
 ```
 
-![](README_figs/README-unnamed-chunk-38-1.png)<!-- -->
+![](README_figs_thyroid/README-unnamed-chunk-38-1.png)<!-- -->
 
-Looking at the matrix, do you think that our models improved after the
-ensembling? Do you think that the ensembled model performed poorly or
-better? Share your thoughts.
+Looking at the matrix, do you thik that our models inproved after the
+ensembling? Share your thoughts.
 
 ## Thank You
 
