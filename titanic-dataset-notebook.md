@@ -1,8 +1,5 @@
-An R Markdown document converted from
-“C:/Users/Octopus/Downloads/titanic-dataset-notebook.ipynb”
+Wrangling, Exploring, and Predicting the Titanic Dataset
 ================
-
-------------------------------------------------------------------------
 
 # Wrangling, Exploring, and Predicting the Titanic Dataset
 
@@ -72,7 +69,7 @@ library(ggpubr)
 The train dataset
 
 ``` r
-train <- read.csv("./train.csv")
+train <- read.csv("C:/Users/Octopus/Downloads/train.csv")
 ```
 
 ``` r
@@ -213,7 +210,7 @@ with actual outcomes). Since the test dataset does not have the actual
 outcomes, I will be splitting the train dataset.
 
 ``` r
-test <- read.csv("./test.csv")
+test <- read.csv("C:/Users/Octopus/Downloads/test.csv")
 
 test <- test %>%
   mutate(Cabin = ifelse(test$Cabin == "", NA, Cabin))
@@ -249,7 +246,7 @@ g1 <- ggplot(train, aes(x = Pclass, fill = Survived)) +
 g1
 ```
 
-![](README_figs/README-unnamed-chunk-13-1.png)<!-- -->
+![](README_figs_titanic/README-unnamed-chunk-13-1.png)<!-- -->
 
 As you can see from the plot, people who bought te
 
@@ -280,7 +277,7 @@ finally <- map(response, ~map(factor_predicator, chart_fun, y = .x))
 finally$Survived$Pclass
 ```
 
-![](README_figs/README-unnamed-chunk-15-1.png)<!-- -->
+![](README_figs_titanic/README-unnamed-chunk-15-1.png)<!-- -->
 
 I prefer this form of stacked bars as you can easily tell the majority
 class that survived or died. Now let us plot all the cartegorical
@@ -290,7 +287,7 @@ variables together
 cowplot::plot_grid(plotlist = finally[[1]])
 ```
 
-![](README_figs/README-unnamed-chunk-16-1.png)<!-- -->
+![](README_figs_titanic/README-unnamed-chunk-16-1.png)<!-- -->
 
 I love analysing my cartegorical variables with chi-square as it helps
 to tell which variable has a significant relationship with the outcome
@@ -357,7 +354,7 @@ finally1 <- map(response, ~map(numeric_predicator, chart_fun1, y = .x))
 cowplot::plot_grid(plotlist = finally1[[1]])
 ```
 
-![](README_figs/README-unnamed-chunk-18-1.png)<!-- -->
+![](README_figs_titanic/README-unnamed-chunk-18-1.png)<!-- -->
 
 Chi-test for cartegorical, Anova for continous
 
@@ -522,7 +519,7 @@ predicted_data %>%
   autoplot()
 ```
 
-![](README_figs/README-unnamed-chunk-32-1.png)<!-- -->
+![](README_figs_titanic/README-unnamed-chunk-32-1.png)<!-- -->
 
 The model did pretty good. Time to plot a confusion matrix as well as
 gather other necessary metrics
@@ -532,7 +529,7 @@ conf_mat(predicted_data, truth = Survived, estimate = .pred_class) %>%
   autoplot(type = "heatmap")
 ```
 
-![](README_figs/README-unnamed-chunk-33-1.png)<!-- -->
+![](README_figs_titanic/README-unnamed-chunk-33-1.png)<!-- -->
 
 ``` r
 caret::confusionMatrix(reference = predicted_data$Survived, data = predicted_data$.pred_class, mode='everything', positive="1")
