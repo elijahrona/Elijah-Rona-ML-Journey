@@ -1,7 +1,5 @@
-------------------------------------------------------------------------
-
-title: Webscraping, Wrangling, and Simple Analysis output:
-rmarkdown::github_document —
+Webscraping, Wrangling, and Simple Analysis
+================
 
 # Webscraping, Wrangling, and Simple Analysis
 
@@ -113,12 +111,12 @@ head(first_table)
     ## # A tibble: 6 x 22
     ##     `#` `Country,Other` TotalCases NewCases TotalDeaths NewDeaths TotalRecovered
     ##   <int> <chr>           <chr>      <chr>    <chr>       <chr>     <chr>         
-    ## 1    NA North America   102,830,0~ +60,651  1,478,490   +277      96,705,279    
-    ## 2    NA Asia            157,859,1~ +183,555 1,434,123   +289      150,965,296   
-    ## 3    NA South America   58,257,124 +58,019  1,300,437   +121      55,383,637    
-    ## 4    NA Europe          198,355,0~ +178,480 1,846,615   +480      188,529,039   
-    ## 5    NA Oceania         9,080,556  +40,989  12,865      +82       8,706,346     
-    ## 6    NA Africa          12,191,740 +4,260   255,250     +25       11,397,803    
+    ## 1    NA North America   109,736,9~ +47,390  1,502,158   +211      102,583,919   
+    ## 2    NA Asia            167,912,9~ +379,416 1,446,398   +328      160,252,308   
+    ## 3    NA Europe          214,486,3~ +201,739 1,873,020   +539      203,516,256   
+    ## 4    NA South America   61,898,144 +15,377  1,314,148   +19       58,932,625    
+    ## 5    NA Oceania         11,164,670 +58,203  16,059      +82       10,596,468    
+    ## 6    NA Africa          12,513,259 +1,446   256,821     +11       11,694,291    
     ## # ... with 15 more variables: NewRecovered <chr>, ActiveCases <chr>,
     ## #   Serious,Critical <chr>, Tot Cases/1M pop <chr>, Deaths/1M pop <chr>,
     ## #   TotalTests <chr>, Tests/1M pop <chr>, Population <chr>, Continent <chr>,
@@ -142,12 +140,12 @@ head(first_table)
     ## # A tibble: 6 x 8
     ##   `Country,Other` TotalCases TotalDeaths TotalRecovered ActiveCases TotalTests  
     ##   <chr>           <chr>      <chr>       <chr>          <chr>       <chr>       
-    ## 1 USA             87,070,948 1,035,171   82,888,463     3,147,314   1,037,518,2~
-    ## 2 India           43,207,265 524,723     42,640,301     42,241      853,863,238 
-    ## 3 Brazil          31,360,850 667,790     30,155,386     537,674     63,776,166  
-    ## 4 France          29,753,370 148,710     29,166,810     437,850     271,490,188 
-    ## 5 Germany         26,727,874 140,009     25,803,300     784,565     122,332,384 
-    ## 6 UK              22,373,146 179,165     22,013,928     180,053     522,526,476 
+    ## 1 USA             92,510,813 1,052,994   87,663,387     3,794,432   1,066,125,6~
+    ## 2 India           43,955,197 526,167     43,267,571     161,459     873,185,917 
+    ## 3 France          33,689,657 151,782     31,822,928     1,714,947   271,490,188 
+    ## 4 Brazil          33,660,608 677,563     32,121,537     861,508     63,776,166  
+    ## 5 Germany         30,598,385 143,545     28,627,900     1,826,940   122,332,384 
+    ## 6 UK              23,212,565 182,727     22,566,588     463,250     522,526,476 
     ## # ... with 2 more variables: Population <chr>, Continent <chr>
 
 Now that we have the columns that we need, let us convert the columns
@@ -210,7 +208,7 @@ g1 <- continents %>%
 g1
 ```
 
-![](README_figs/README-unnamed-chunk-11-1.png)<!-- -->
+![](README_figs_webscraping/README-unnamed-chunk-10-1.png)<!-- -->
 
 ### 2. Total Cases (Column Chart)
 
@@ -232,7 +230,7 @@ g2 <- ggplot(continents, aes(x = Continent, y = `Total Cases`, fill = Continent)
 g2
 ```
 
-![](README_figs/README-unnamed-chunk-12-1.png)<!-- -->
+![](README_figs_webscraping/README-unnamed-chunk-11-1.png)<!-- -->
 
 ### 3. Active Cases and Deaths (Line Chart)
 
@@ -254,12 +252,12 @@ head(continents1)
 ```
 
     ##           Continent Attribute   Count
-    ## 1            Africa    Deaths  220321
-    ## 2              Asia    Deaths 1423782
-    ## 3 Australia/Oceania    Deaths   12203
-    ## 4            Europe    Deaths 1707135
-    ## 5     North America    Deaths 1478197
-    ## 6     South America    Deaths 1264788
+    ## 1            Africa    Deaths  221304
+    ## 2              Asia    Deaths 1443263
+    ## 3 Australia/Oceania    Deaths   15397
+    ## 4            Europe    Deaths 1856972
+    ## 5     North America    Deaths  448870
+    ## 6     South America    Deaths 1314148
 
 Time to create the chart.
 
@@ -277,7 +275,7 @@ g3 <- ggplot(data=continents1, aes(x=Continent, y=Count, group=Attribute,
 g3
 ```
 
-![](README_figs/README-unnamed-chunk-14-1.png)<!-- -->
+![](README_figs_webscraping/README-unnamed-chunk-13-1.png)<!-- -->
 
 ### Combining the Plots to Make a Dashboard
 
@@ -357,7 +355,7 @@ g9 <- ((g5|g6|g7|g8)/g4) + plot_annotation(
 g9
 ```
 
-![](README_figs/README-unnamed-chunk-17-1.png)<!-- -->
+![](README_figs_webscraping/README-unnamed-chunk-16-1.png)<!-- -->
 
 Wonderful, right? Remember that the details in this dahsboard are not
 fully correst as we deleted some rows with missing values (NAs).
