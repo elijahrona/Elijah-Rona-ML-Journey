@@ -1,7 +1,7 @@
-Analysis with Regular Expressions (ReGex)
+Analysis with Regular Expressions (RegEx)
 ================
 
-# Analysis with Regular Expressions (ReGex)
+# Analysis with Regular Expressions (RegEx)
 
 Welcome to my notebook once again. I am [Elijah
 Rona](https://twitter.com/Elijah_Rona) currently building my [portfolio
@@ -10,15 +10,15 @@ analytics](https://github.com/elijahrona/Elijah-Rona-ML-Journey) as I
 hope to get every better at it.
 
 For a very long time now, I have come across but avoided Regular
-Expressions (ReGex) because while the application seems very cool, ReGex
+Expressions (RegEx) because while the application seems very cool, RegEx
 looked difficult when I first saw it.
 
-Well, there’s no way I can avoid ReGex, so I had to study it. However, I
-am realizing that I love ReGex and it is more like my most favorite part
+Well, there’s no way I can avoid RegEx, so I had to study it. However, I
+am realizing that I love RegEx and it is more like my most favorite part
 of analysis now as I can now analyze the inner parts of any dataset with
 strings.
 
-Let’s get to it as I hope to share my knowledge of ReGex with you
+Let’s get to it as I hope to share my knowledge of RegEx with you
 through this notebook… \## Loading the Libraries
 
 ``` r
@@ -50,7 +50,7 @@ library(patchwork) #to combine plots
 
 ## Loading the Dataset (Titanic)
 
-For this notebook, I will use ReGex to collect important details from
+For this notebook, I will use RegEx to collect important details from
 the Titanic dataset for further analysis
 
 ``` r
@@ -82,7 +82,7 @@ head(titanic)
 
 ## Regular Expressions
 
-Let’s use ReGex to collect the titles of people in the “Name” column of
+Let’s use RegEx to collect the titles of people in the “Name” column of
 the dataset
 
 ### 1. Get the Title of People in the Name Column
@@ -156,7 +156,7 @@ head(surname,20)
     ## [13] "Saundercock"   "Andersson"     "Vestrom"       "Hewlett"      
     ## [17] "Rice"          "Williams"      "Vander Planke" "Masselmani"
 
-This ReGex is a bit complex as some people have spaces, hiphens, and
+This RegEx is a bit complex as some people have spaces, hiphens, and
 other spaces in their surnames. Well, here’s the explanation:
 
 **^\\w**\*: we are looking for a string with letters (at least one
@@ -187,11 +187,11 @@ head(surname2,20)
     ## [17] "Rice,"          "Williams,"      "Vander Planke," "Masselmani,"
 
 The simple explanation is that we just want to collect every letter
-symbol, or space that preceeds the comma (,). This simply ReGex is
+symbol, or space that preceeds the comma (,). This simply RegEx is
 applicable to this dataset because the name column is well-written.
 However we may not be so lucky for other datasets.
 
-It is time to assign this ReGex to a new column in our dataset
+It is time to assign this RegEx to a new column in our dataset
 
 ``` r
 titanic$Surname <- surname
@@ -295,7 +295,7 @@ g1 <- ggplot(grouped_surname_filtered, aes(area = Members, fill = Survival_Rate,
 g1
 ```
 
-![](README_figs/README-unnamed-chunk-14-1.png)<!-- -->
+![](README_figs_RegEx/README-unnamed-chunk-14-1.png)<!-- -->
 
 Now, let us analyze the “Title” column so that we can tell the most
 common titles of people in the RMS titanic ship. We will not focus on
@@ -341,7 +341,7 @@ g2 <- ggplot(grouped_title, aes(area = Count, fill = Title, subgroup = Sex,
 g2
 ```
 
-![](README_figs/README-unnamed-chunk-16-1.png)<!-- -->
+![](README_figs_RegEx/README-unnamed-chunk-16-1.png)<!-- -->
 
 As you can see, we have way more males than females. Also, the most
 common title in the ship is “Mr,” followeed by “Miss” and “Mrs.”
@@ -376,7 +376,7 @@ g3 <- titanic_viz("Sex") +
 g3
 ```
 
-![](README_figs/README-unnamed-chunk-18-1.png)<!-- -->
+![](README_figs_RegEx/README-unnamed-chunk-18-1.png)<!-- -->
 
 ### 4. By Cabin
 
@@ -391,7 +391,7 @@ g4 <- titanic_viz("Cabin") +
 g4
 ```
 
-![](README_figs/README-unnamed-chunk-19-1.png)<!-- -->
+![](README_figs_RegEx/README-unnamed-chunk-19-1.png)<!-- -->
 
 ### 5. By Port Embarked
 
@@ -406,7 +406,7 @@ g5 <- titanic_viz("Embarked") +
 g5
 ```
 
-![](README_figs/README-unnamed-chunk-20-1.png)<!-- -->
+![](README_figs_RegEx/README-unnamed-chunk-20-1.png)<!-- -->
 
 ## Dashboard or Combined Plots
 
@@ -419,7 +419,7 @@ options(repr.plot.width=16, repr.plot.height = 8)
 g2 + plot_annotation(caption = "By: @Elijah_Rona")
 ```
 
-![](README_figs/README-unnamed-chunk-21-1.png)<!-- -->
+![](README_figs_RegEx/README-unnamed-chunk-21-1.png)<!-- -->
 
 ``` r
 g1/(g3|g4|g5) + plot_annotation(
@@ -427,11 +427,11 @@ g1/(g3|g4|g5) + plot_annotation(
   caption = "By: @Elijah_Rona")
 ```
 
-![](README_figs/README-unnamed-chunk-21-2.png)<!-- -->
+![](README_figs_RegEx/README-unnamed-chunk-21-2.png)<!-- -->
 
 ## Conclusion
 
-ReGex helps us to analyze features of a dataset that we would have
+RegEx helps us to analyze features of a dataset that we would have
 ignored. It is helpful, so everyone must learn it. I will continue to
 learn and apply other useful concepts as I hope to improve.
 
